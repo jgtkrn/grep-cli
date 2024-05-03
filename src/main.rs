@@ -1,13 +1,13 @@
 use std::env;
 use std::fs;
+use grep_cli::Config;
 fn main() {
-    let args: Vec<String> = env::args().collect(); 
-    let query: &str = &args[1];
-    let path: &str = &args[2];
+    let args: Vec<String> = env::args().collect();
+    let config = Config::new(&args);
 
-    println!("searching for {}", query);
-    println!("in file{}", path);
-    let contents = fs::read_to_string(path).expect("should have to read now.");
+    println!("searching for {}", config.query);
+    println!("in file{}", config.path);
+    let contents = fs::read_to_string(config.path).expect("should have to read now.");
     println!("with contents: \r\n {}", contents);
 
 }
