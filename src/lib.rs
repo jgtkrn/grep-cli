@@ -1,3 +1,6 @@
+use std::fs;
+use std::error::Error;
+
 #[allow(dead_code)]
 pub struct Config {
     pub query: String,
@@ -12,4 +15,10 @@ impl Config {
         let path: String = args[2].clone();
         Ok(Config{query,path})
     }
-} 
+}
+
+pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    let contents = fs::read_to_string(config.path)?;
+    println!("with contents: \r\n {}", contents);
+    Ok(())
+}
