@@ -1,6 +1,6 @@
 use std::env;
 use std::process;
-use grep_cli::Config;
+use grep_cli_lin::Config;
 
 #[allow(unused_variables)]
 fn main() {
@@ -9,7 +9,7 @@ fn main() {
         process::exit(1);
     });
 
-    if let Err(e) = grep_cli::run(config) {
+    if let Err(e) = grep_cli_lin::run(config) {
         eprintln!("Application error: {e}");
         process::exit(1);
     }

@@ -1,5 +1,5 @@
 [package]
-name = "grep-cli"
+name = "grep-cli-lin"
 version = "0.1.0"
 edition = "2021"
 
