@@ -8,10 +8,16 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn build (args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 3 {return Err("please use proper arguments.")};
-        let query: String = args[1].clone();
-        let path: String = args[2].clone();
+    pub fn build (mut args: impl Iterator<Item = String>) -> Result<Config, &'static str> {
+        args.next();
+        let query: String = match args.next() {
+            Some(arg) => arg,
+            None => return Err("cannot parse search value")
+        };
+        let path: String = match args.next() {
+            Some(arg) => arg,
+            None => return  Err("cannot parse file path")
+        };
         let ignore_case = env::var("IGNORE_CASE").is_ok();
         Ok(Config{query,path,ignore_case})
     }
@@ -31,13 +37,10 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 
 
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
-    let mut results = Vec::new();
-    for line in contents.lines() {
-        if line.contains(query) {
-            results.push(line)
-        }
-    }
-    results
+    contents
+    .lines()
+    .filter(|line| line.contains(query))
+    .collect()
 }
 
 pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
